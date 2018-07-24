@@ -12,6 +12,7 @@
 		29BFCFC82106C30700411DE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29BFCFC62106C30700411DE9 /* Main.storyboard */; };
 		29BFCFCA2106C30A00411DE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29BFCFC92106C30A00411DE9 /* Assets.xcassets */; };
 		29BFCFCD2106C30A00411DE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29BFCFCB2106C30A00411DE9 /* LaunchScreen.storyboard */; };
+		29BFCFD62106C3A200411DE9 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BFCFD52106C3A200411DE9 /* UIImage+Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		29BFCFC92106C30A00411DE9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29BFCFCC2106C30A00411DE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29BFCFCE2106C30A00411DE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		29BFCFD52106C3A200411DE9 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		29BFCFC12106C30700411DE9 /* GradientFromImage */ = {
 			isa = PBXGroup;
 			children = (
+				29BFCFD42106C37500411DE9 /* Source */,
 				29BFCFC22106C30700411DE9 /* AppDelegate.swift */,
 				29BFCFC42106C30700411DE9 /* ViewController.swift */,
 				29BFCFC62106C30700411DE9 /* Main.storyboard */,
@@ -62,6 +65,14 @@
 				29BFCFCE2106C30A00411DE9 /* Info.plist */,
 			);
 			path = GradientFromImage;
+			sourceTree = "<group>";
+		};
+		29BFCFD42106C37500411DE9 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				29BFCFD52106C3A200411DE9 /* UIImage+Color.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +148,7 @@
 			files = (
 				29BFCFC52106C30700411DE9 /* ViewController.swift in Sources */,
 				29BFCFC32106C30700411DE9 /* AppDelegate.swift in Sources */,
+				29BFCFD62106C3A200411DE9 /* UIImage+Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
