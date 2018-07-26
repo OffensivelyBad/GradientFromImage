@@ -16,6 +16,7 @@ class ViewController: UIViewController {
         }
     }
     fileprivate var imagePicker: UIImagePickerController?
+    fileprivate var gradientLayer: CAGradientLayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,23 +31,26 @@ class ViewController: UIViewController {
     }
     
     private func setBackgroundGradient() {
+        // TODO: animate the initial gradient
+        // TODO: animate the background gradient to ranom positions
         guard let image = self.imageView.image else { return }
-        let gradient = image.getGradient(frame: self.imageView.frame.size)
-        gradient.frame = self.view.bounds
-        self.view.layer.insertSublayer(gradient, at: 0)
+        guard self.gradientLayer == nil else { animateToGradient(); return }
+        self.gradientLayer = CAGradientLayer()
+        self.gradientLayer = image.getGradient(frame: self.imageView.frame.size)
+        self.gradientLayer!.frame = self.view.bounds
+        self.view.layer.insertSublayer(self.gradientLayer!, at: 0)
     }
     
-//    private func animateToGradient() {
-//        let gradientChangeAnimation = CABasicAnimation(keyPath: "colors")
-//        gradientChangeAnimation.duration = 5.0
-//        gradientChangeAnimation.toValue = [
-//            UIColor(red: 244/255, green: 88/255, blue: 53/255, alpha: 1).cgColor,
-//            UIColor(red: 196/255, green: 70/255, blue: 107/255, alpha: 1).cgColor
-//        ]
-//        gradientChangeAnimation.fillMode = kCAFillModeForwards
-//        gradientChangeAnimation.isRemovedOnCompletion = false
-//        gradient.add(gradientChangeAnimation, forKey: "colorChange")
-//    }
+    private func animateToGradient() {
+        guard let image = self.imageView.image else { return }
+        let gradientChangeAnimation = CABasicAnimation(keyPath: "colors")
+        gradientChangeAnimation.duration = 5.0
+        let (firstColor, lastColor) = image.getGradientColors()
+        gradientChangeAnimation.toValue = [firstColor.cgColor, lastColor.cgColor]
+        gradientChangeAnimation.fillMode = kCAFillModeForwards
+        gradientChangeAnimation.isRemovedOnCompletion = false
+        self.gradientLayer!.add(gradientChangeAnimation, forKey: "colorChange")
+    }
 
 }
 
