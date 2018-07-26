@@ -10,17 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var imageView: UIImageView! {
-        didSet {
-            setBackgroundGradient()
-        }
-    }
-    fileprivate var imagePicker: UIImagePickerController?
-    fileprivate var gradientLayer: CAGradientLayer?
+    @IBOutlet weak var imageView: UIImageView!
+    private var imagePicker: UIImagePickerController?
+    private var gradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let initialBackgroundColor = self.view.backgroundColor ?? UIColor.clear
+        setInitialBackgroundGradient(to: [initialBackgroundColor.cgColor, initialBackgroundColor.cgColor])
     }
     
     @IBAction private func selectImage(sender: Any) {
@@ -30,28 +27,45 @@ class ViewController: UIViewController {
         present(self.imagePicker!, animated: true)
     }
     
-    private func setBackgroundGradient() {
-        // TODO: animate the initial gradient
-        // TODO: animate the background gradient to ranom positions
-        guard let image = self.imageView.image else { return }
-        guard self.gradientLayer == nil else { animateToGradient(); return }
+}
+
+// MARK: - Gradients
+extension ViewController {
+    
+    private func setInitialBackgroundGradient(to colors: [CGColor]) {
+        guard colors.count > 1 else { return }
         self.gradientLayer = CAGradientLayer()
-        self.gradientLayer = image.getGradient(frame: self.imageView.frame.size)
-        self.gradientLayer!.frame = self.view.bounds
-        self.view.layer.insertSublayer(self.gradientLayer!, at: 0)
+        self.gradientLayer.colors = [colors[0], colors[1]]
+        self.gradientLayer.frame = self.view.bounds
+        self.view.layer.insertSublayer(self.gradientLayer, at: 0)
     }
     
-    private func animateToGradient() {
-        guard let image = self.imageView.image else { return }
-        let gradientChangeAnimation = CABasicAnimation(keyPath: "colors")
-        gradientChangeAnimation.duration = 5.0
+    private func setBackgroundGradient(for image: UIImage) {
+        let colors = getBackgroundGradient(for: image)
+        guard let gradientColors = colors, gradientColors.count > 1 else { return }
+        animateGradient(to: [gradientColors[0], gradientColors[1]], duration: 2.0)
+    }
+    
+    private func getBackgroundGradient(for image: UIImage) -> [CGColor]? {
+        guard let image = self.imageView.image else { return nil }
         let (firstColor, lastColor) = image.getGradientColors()
-        gradientChangeAnimation.toValue = [firstColor.cgColor, lastColor.cgColor]
+        return [firstColor.cgColor, lastColor.cgColor]
+    }
+    
+    private func animateGradient(to colors: [CGColor], duration: TimeInterval) {
+        guard colors.count >= 2 else { return }
+        let gradientChangeAnimation = CABasicAnimation(keyPath: "colors")
+        let toColors = [colors[0], colors[1]]
+        let fromColors = self.gradientLayer.colors ?? [UIColor.clear.cgColor, UIColor.clear.cgColor]
+        gradientChangeAnimation.duration = duration
+        gradientChangeAnimation.fromValue = fromColors
+        gradientChangeAnimation.toValue = toColors
         gradientChangeAnimation.fillMode = kCAFillModeForwards
         gradientChangeAnimation.isRemovedOnCompletion = false
-        self.gradientLayer!.add(gradientChangeAnimation, forKey: "colorChange")
+        self.gradientLayer.colors = toColors
+        self.gradientLayer.add(gradientChangeAnimation, forKey: "colorChange")
     }
-
+    
 }
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -61,7 +75,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         imageView.image = image
         dismiss(animated: true) {
             self.imagePicker = nil
-            self.setBackgroundGradient()
+            self.setBackgroundGradient(for: image)
         }
     }
     

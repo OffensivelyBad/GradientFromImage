@@ -37,9 +37,20 @@ extension UIImage {
         return gradient
     }
     
-    func getGradientColors() -> (firstColor: UIColor, lastColor: UIColor) {
+    func getFirstAndLastGradientColors() -> (firstColor: UIColor, lastColor: UIColor) {
+        // get the first and last pixels for the gradient
         let firstPoint = CGPoint.zero
         let lastPoint = CGPoint(x: self.size.width, y: self.size.height)
+        let firstColor = getPixelColor(pos: firstPoint)
+        let lastColor = getPixelColor(pos: lastPoint)
+        
+        return (firstColor, lastColor)
+    }
+    
+    func getGradientColors() -> (firstColor: UIColor, lastColor: UIColor) {
+        // get the middle x pixels on the top and bottom of the image
+        let firstPoint = CGPoint(x: self.size.width / 2, y: 0)
+        let lastPoint = CGPoint(x: self.size.width / 2, y: self.size.height)
         let firstColor = getPixelColor(pos: firstPoint)
         let lastColor = getPixelColor(pos: lastPoint)
         
